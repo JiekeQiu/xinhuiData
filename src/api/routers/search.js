@@ -7,11 +7,12 @@ const db = require('../../db/database');
 router.get('/', async (ctx, next) => {
     
     let {name,typename} = ctx.query
-    let seach = typename.replaceAll('*',"\\*")
+    let seachtype = typename.replaceAll('.',"\\.")
+    let seach = seachtype.replaceAll('*',"\\*(.+\\*)?")
     let seacName = name.replaceAll('/',"\\/")
     //如果不行就删掉
-    let seachTypeName = seach.replaceAll('+',"\\d+\\.?(\\d+)")
-
+    // let seachTypeName = '\/(.+\\*)?'+seach+'(.+\\*)?\/'
+    let seachTypeName = new RegExp('(.+\\*)?'+seach+'(.+\\*)?')
     if (name) {
         if (typename) {
             // 这里为精确查找
@@ -74,6 +75,5 @@ router.get('/', async (ctx, next) => {
         }
     }
 })
-
 
 module.exports = router;

@@ -21,7 +21,7 @@ router.get('/', async (ctx, next) => {
                  要删除修改前的历史记录
                  保存修改后的数据
                
-           */
+           */ 
     //如果产品的名字不等于修改后的名字或产品规格不等于修改后的规格执行这里
     if (date[0].name != name || date[0].typename != typename) {
         if (date[0].num == num && date[0].numL == numL && date[0].numR == numR) {
@@ -39,7 +39,7 @@ router.get('/', async (ctx, next) => {
             let sjNumL = kcNumL - numL;
             let sjNumR = kcNumR - numR;
             if (sjNumL <= sjNumR) {
-                num = sjNum + sjNumL;
+                num = sjNum*1 + sjNumL*1;
                 numL = sjNumL - sjNumL;
                 numR = sjNumR - sjNumL;
             } else if (sjNumL > sjNumR) {
@@ -54,17 +54,17 @@ router.get('/', async (ctx, next) => {
             if (findRes[0]) {
                 // 如果库存里面有该产品就直接给产品添加数量
                 console.log('看看这里', ctx.query.name, ctx.query.typename, ctx.query.numR)
-                let resNum = findRes[0].num + ctx.query.num;
-                let resNumL = findRes[0].numL + ctx.query.numL;
-                let resNumR = findRes[0].numR + ctx.query.numR;
+                let resNum = findRes[0].num*1 + ctx.query.num*1;
+                let resNumL = findRes[0].numL*1 + ctx.query.numL*1;
+                let resNumR = findRes[0].numR*1 + ctx.query.numR*1;
                 if (resNumL <= resNumR) {
-                    resNum = resNum + resNumL;
+                    resNum = resNum*1 + resNumL*1;
                     resNumL = resNumR - resNumL;
                     resNumR = resNumR - resNumR
                 } else if (resNumL > resNumR) {
-                    resNum = resNum + resNumR;
-                    resNumL = resNumL - resNumL;
+                    resNum = resNum*1 + resNumR*1;
                     resNumR = resNumL - resNumR
+                    resNumL = resNumL - resNumL;
                 }
                 let updateFindRes = await db.update('goods', { name: ctx.query.name, typename: ctx.query.typename }, { $set: { num: resNum, numL: resNumL, numR: resNumR } })
                 ctx.body = {
