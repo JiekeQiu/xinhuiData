@@ -48,7 +48,11 @@ router.get('/', async (ctx, next) => {
 
                     }else if(scrap!=-1){
                         // 退货废品
-                        code(name,typename,ckData[0].num,sjnumR,sjnumL,'退货成功',"205")
+                        ctx.body = {
+                            state:200,
+                            msg:"退货成功"
+                        }
+                        // code(name,typename,ckData[0].num,sjnumR,sjnumL,'退货成功',"205")
                     }
                 }
             }else if(unit=="只"){
@@ -131,6 +135,12 @@ router.get('/', async (ctx, next) => {
                                 // 右手没有值
                                 code(name,typename,nums,numR,numL,'退货成功','200')
                             }
+                        }else{
+                            console.log("左手退货")
+                            ctx.body = {
+                                state:200,
+                                msg:"退货成功"
+                            }
                         }
 
                     }else if(right!=-1){
@@ -158,6 +168,11 @@ router.get('/', async (ctx, next) => {
                             }else if(numL==0){
                                 // 右手有值
                                 code(name,typename,nums,numR,numL,'退货成功','200')
+                            }
+                        }else{
+                            ctx.body = {
+                                state:200,
+                                msg:"退货成功"
                             }
                         }
                     }
@@ -190,7 +205,7 @@ router.get('/', async (ctx, next) => {
             code:code
         }
         sjData.push(obj)        
-
+        console.log('退货副',sjData)
     }
 
     // 更新数据库

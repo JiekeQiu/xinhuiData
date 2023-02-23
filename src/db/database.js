@@ -6,31 +6,31 @@ const database_url = 'mongodb://localhost:27017';
 const database_name = 'studyVue';
 // const database_name = 'xinhui';
 
-async function connect(){
-    let client = await MongoClient.connect(database_url,{ useNewUrlParser: true });
+async function connect() {
+    let client = await MongoClient.connect(database_url, { useNewUrlParser: true });
     let db = client.db(database_name);
-    return {db,client}
+    return { db, client }
 }
 
 
-exports.insert = async (colName,data)=>{
+exports.insert = async (colName, data) => {
 
-    let {db,client} = await connect();
+    let { db, client } = await connect();
 
 
     // console.log('client',client)
     // console.log('db',db)
     let collection = db.collection(colName);
-    let res = await collection[Array.isArray(data)?'insertMany':'insertOne'](data);
+    let res = await collection[Array.isArray(data) ? 'insertMany' : 'insertOne'](data);
 
     client.close();
 
     return res;
 }
 
-exports.delete = async (colName,query)=>{
+exports.delete = async (colName, query) => {
 
-    let {db,client} = await connect();
+    let { db, client } = await connect();
 
     let collection = db.collection(colName);
     let res = await collection['deleteMany'](query);
@@ -40,21 +40,21 @@ exports.delete = async (colName,query)=>{
     return res;
 }
 
-exports.update = async (colName,query,newData)=>{
+exports.update = async (colName, query, newData) => {
 
-    let {db,client} = await connect();
+    let { db, client } = await connect();
 
     let collection = db.collection(colName);
-    let res = await collection['updateMany'](query,newData);
+    let res = await collection['updateMany'](query, newData);
 
     client.close();
 
     return res;
 }
 
-exports.find = async (colName,query)=>{
+exports.find = async (colName, query) => {
 
-    let {db,client} = await connect();
+    let { db, client } = await connect();
 
     let collection = db.collection(colName);
     let res = await collection.find(query).toArray();
@@ -64,8 +64,8 @@ exports.find = async (colName,query)=>{
     return res;
 }
 
-exports.findTime = async(colName,query)=>{
-    let {db,client} = await connect();
+exports.findTime = async (colName, query) => {
+    let { db, client } = await connect();
 
     let collection = db.collection(colName);
     let res = await collection.find()
@@ -73,21 +73,47 @@ exports.findTime = async(colName,query)=>{
 }
 
 // 分页查询
-exports.findPage = async(colName,query)=>{
-    let size = query.pageSize*1
-    let idx = query.pageIndex*1
-    let {db,client} = await connect();
+exports.findPage = async (colName, query) => {
+    let size = query.pageSize * 1
+    let idx = query.pageIndex * 1
+    let { db, client } = await connect();
     let collection = db.collection(colName);
-    let res = await collection.find({}).limit(size).skip((idx-1)*size).sort({}).toArray();
+    let res = await collection.find({}).limit(size).skip((idx - 1) * size).sort({}).toArray();
     client.close();
 
     return res
 }
 // 总条数查询
-exports.count = async(colName,query)=>{
-    let {db,client} = await connect();
+exports.count = async (colName, query) => {
+    let { db, client } = await connect();
     let collection = db.collection(colName);
     let res = await collection.find({}).count();
+    client.close();
+
+    return res
+}
+// 计算总数
+exports.sum = async (colName, query) => {
+    let { db, client } = await connect();
+    let collection = db.collection(colName);
+    console.log("拿到的是什么",query)
+    let name = query.name
+    let entryTime = query.date
+    let res = await collection.aggregate([
+        {
+            $project : { 
+                // name:name,
+                // AllMoney:{AllMoney:"AllMoney"},
+                month : {$month : "$entryTime"}, 
+                // year : {$year :  "$entryTime"},
+                expenseAmount : 1
+            }}, 
+          {$group : { 
+                  _id : null,  
+                total : {$sum : 1} 
+          }
+        }
+    ]).toArray()
     client.close();
 
     return res
