@@ -37,6 +37,8 @@ const billSearchRouter = require('./billSearch');
 const findbillRouter = require('./findbill');
 const findMoneyRouter = require('./findMoney');
 const billMoneyRouter = require('./billMoney');
+const exportfileRouter = require('./exportfile');
+
 const tokenVerify = require('./tokenverify');
 // 使用koa-body
 router.use(koaBody({
@@ -58,6 +60,7 @@ router.use(koaBody({
 }))
 router.use('/user',userRouter.routes())
 router.use('/billmoney',billMoneyRouter.routes())
+router.use('/exportfile',exportfileRouter.routes())
 router.use('/findmoney',findMoneyRouter.routes())
 router.use('/findbill',findbillRouter.routes())
 router.use('/billsearch',billSearchRouter.routes())
