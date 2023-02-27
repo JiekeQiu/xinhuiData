@@ -463,6 +463,8 @@ router.get('/', async (ctx, next) => {
                                 })
 
                             }
+                            console.log()
+                            module.exports = arr
                             ctx.body={
                                 state:200,
                                 arr
@@ -963,5 +965,5 @@ router.get('/', async (ctx, next) => {
 
 })
 
-
+// console.log("看看")
 module.exports = router;

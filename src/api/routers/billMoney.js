@@ -28,9 +28,10 @@ router.get('/', async (ctx, next) => {
                         } else {
                             num += Number(dataItem.num);
                         }
+                        
                     })
                     if (result[date]) {
-                        result[date].num = result[date].num + num;
+                        result[date].num = (result[date].num*1 + num*1).toFixed(0);
                         result[date].money = (result[date].money * 1 + money * 1).toFixed(2);
                     } else {
                         result[date] = {

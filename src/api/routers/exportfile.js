@@ -11,12 +11,13 @@ const db = require('../../db/database');
 router.get('/', async (ctx, next) => {
     let { data } = ctx.query
     let docs = JSON.parse(data)
+    console.log("前端传",docs[0])
     let json = [{}]
     if (docs.length != 0) {
         // 实例化一个工作簿
         let book = XLSX.utils.book_new()
         // 实例化一个Sheet，并定义表头
-        let sheet = XLSX.utils.json_to_sheet(json, { header: ["新辉眼镜有限公司"] })
+        let sheet = XLSX.utils.json_to_sheet(json, { header: ["新辉眼镜有限公司对账单（客户：）"] })
         // 从A2行开始插入数据
         XLSX.utils.sheet_add_json(sheet, docs, { skipHeader: false, origin: "A2" });
         //   定义表格样式
@@ -31,10 +32,10 @@ router.get('/', async (ctx, next) => {
             { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }
         ]
         // 将Sheet写入工作簿
-        XLSX.utils.book_append_sheet(book, sheet, '一班')
+        XLSX.utils.book_append_sheet(book, sheet, '对象')
         let res = XLSX.write(book, { type: 'buffer' })
         ctx.set("Content-Type", "application/octet-stream")
-        ctx.set("Content-Disposition", "attachment; filename=" + encodeURIComponent("文件名.xlsx"));
+        ctx.set("Content-Disposition", "attachment; filename=" + encodeURIComponent(docs[0].客户名称+".xlsx"));
         ctx.body = res;
 
 
