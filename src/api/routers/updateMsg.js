@@ -5,6 +5,7 @@ const db = require('../../db/database');
  
 router.get('/',async(ctx,next)=>{
     let {No,address,bianhao,contact,lister,name,phone,status} = ctx.query;
+    
     let res = await db.update('delivery',{No},{$set:{address,bianhao,contact,lister,name,phone,status}})
     console.log(res)
     if(res.modifiedCount>0){
