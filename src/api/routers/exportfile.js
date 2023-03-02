@@ -2,7 +2,7 @@
  * 
  */
 const Router = require("koa-router");
-const XLSX = require('xlsx')
+const XLSX = require('xlsx-js-style')
 const axios = require("axios");
 
 
@@ -14,7 +14,7 @@ router.get('/', async (ctx, next) => {
     let docs = JSON.parse(data)
     if (docs.title == "客户详单") {
         await axios.get('http://localhost:18883/findbill', { params: docs }).then(response => {
-            console.log("看看结果", response.data.arr)
+            console.log("看看结果", response.data.arr.length)
             let num = 0
             let All = 0
             response.data.arr.forEach(item => {
@@ -71,7 +71,10 @@ router.get('/', async (ctx, next) => {
                 // 合并表头单元格
                 sheet['!merges'] = [
                     { s: { r: 0, c: 0 }, e: { r: 0, c: 9 } }
-                ]
+                ];
+                // 居中表头
+                alignment(sheet)
+                   
                 // 将Sheet写入工作簿
                 XLSX.utils.book_append_sheet(book, sheet, '对象')
                 let res = XLSX.write(book, { type: 'buffer' })
@@ -129,6 +132,7 @@ router.get('/', async (ctx, next) => {
                 sheet['!merges'] = [
                     { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }
                 ]
+                alignment(sheet)
                 // 将Sheet写入工作簿
                 XLSX.utils.book_append_sheet(book, sheet, '对象')
                 let res = XLSX.write(book, { type: 'buffer' })
@@ -185,6 +189,7 @@ router.get('/', async (ctx, next) => {
                 sheet['!merges'] = [
                     { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }
                 ]
+                alignment(sheet)
                 // 将Sheet写入工作簿
                 XLSX.utils.book_append_sheet(book, sheet, '对象')
                 let res = XLSX.write(book, { type: 'buffer' })
@@ -198,7 +203,38 @@ router.get('/', async (ctx, next) => {
         })
     }
 
+    // 封装居中表头和添加边框
+    function alignment(el){
+        // 居中表头
+        for (let key in el) {
+            if (key.indexOf("!") !== 0) {
+                if (key == "A1") {
+                    el[key]['s'] = {
+                        font: {
+                            sz: 20,//设置标题的字号
+                            bold: true,//设置标题是否加粗
+                        },
+                        alignment: { vertical: 'center', horizontal: 'center' },
+                    }
+                }else{
+                    el[key]['s'] = {
+                        font: {
+                            sz: 14,//设置标题的字号
+                        },
+                        alignment: { vertical: 'center', horizontal: 'center' },
+                        border: {
+                            top: { style: 'thin' },
+                            right: { style: 'thin' },
+                            bottom: { style: 'thin' },
+                            left: { style: 'thin' }
+                          }
+                    }
+                }
 
+            }
+        }
+       
+    }
 
 
 })

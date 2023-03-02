@@ -446,8 +446,8 @@ router.get('/', async (ctx, next) => {
                                         
                     }else{
                     // 有usernam没有NO、name、type、timeStart、timeEnd
-                        console.log("有usernam没有NO、name、type、timeStart、timeEnd")                            
-                        let res = await db.find("delivery",{name:username})
+                    let res = await db.find("delivery",{name:username})
+                    console.log("有usernam没有NO、name、type、timeStart、timeEnd")                            
                         if(res.length!=0){
                             let arr = []
                             for(let i=0;i<res.length;i++){
@@ -463,8 +463,7 @@ router.get('/', async (ctx, next) => {
                                 })
 
                             }
-                            console.log()
-                            module.exports = arr
+                            console.log("有usernam没有NO、name、type、timeStart、timeEnd",arr.length)
                             ctx.body={
                                 state:200,
                                 arr
