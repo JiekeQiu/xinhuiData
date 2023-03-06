@@ -13,8 +13,7 @@ router.get('/', async (ctx, next) => {
     let { data } = ctx.query
     let docs = JSON.parse(data)
     if (docs.title == "客户详单") {
-        await axios.get('http://localhost:18883/findbill', { params: docs }).then(response => {
-            console.log("看看结果", response.data.arr.length)
+        await axios.get('http://47.122.37.166:18883/findbill', { params: docs }).then(response => {
             let num = 0
             let All = 0
             response.data.arr.forEach(item => {
@@ -87,7 +86,7 @@ router.get('/', async (ctx, next) => {
 
         })
     } else if (docs.title == "客户订单总金额") {
-        await axios.get('http://localhost:18883/billmoney', { params: docs }).then(response => {
+        await axios.get('http://47.122.37.166:18883/billmoney', { params: docs }).then(response => {
             let money = 0
             let num = 0
             response.data.res.forEach(item => {
@@ -145,7 +144,7 @@ router.get('/', async (ctx, next) => {
 
         })
     } else if (docs.title == "客户订单金额") {
-        await axios.get('http://localhost:18883/findmoney', { params: docs }).then(response => {
+        await axios.get('http://47.122.37.166:18883/findmoney', { params: docs }).then(response => {
             let num = 0
             response.data.arr.forEach(item=>{
                 let number = Number(item.AllMoney)
