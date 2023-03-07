@@ -90,7 +90,7 @@ exports.count = async (colName, query) => {
     let res = await collection.find({}).count();
     client.close();
 
-    return res
+    return res 
 }
 // 计算总数
 exports.sum = async (colName, query) => {

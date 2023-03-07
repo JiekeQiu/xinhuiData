@@ -9,6 +9,9 @@ const koaBody = require('koa-body');
 const router = new Router();
 
 const userRouter = require('./username');
+const materialgoodsRouter = require('./material/materialgoods');
+const materialaddgoodsRouter = require('./material/addgoods');
+const deliverylistRouter = require('./material/deliverylist');
 const listRouter = require('./list');
 const ckAddRouter = require('./ckAdd');
 const goodsnameRouter = require('./goodsname');
@@ -59,6 +62,9 @@ router.use(koaBody({
     
 }))
 router.use('/user',userRouter.routes())
+router.use('/materialgood',materialgoodsRouter.routes())
+router.use('/materialaddgood',materialaddgoodsRouter.routes())
+router.use('/deliverylist',deliverylistRouter.routes())
 router.use('/billmoney',billMoneyRouter.routes())
 router.use('/exportfile',exportfileRouter.routes())
 router.use('/findmoney',findMoneyRouter.routes())
