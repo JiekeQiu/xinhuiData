@@ -1,6 +1,6 @@
 /**
  * 原料历史记录修改逻辑
- * @params type==2 修改出库
+ * @params type==2 修改五金出库
  * 1. 拿到name和typeName先调用deletematerial删除接口进行数量删减
  * 2. 删减成功后，调用入库接口materialaddgood
  * 3. 如果成功的话就更新历史记录
@@ -18,24 +18,19 @@ router.get('/', async (ctx, next) => {
     let { name, typeName, num, _id, price, money, username, unit, time, operation, remark, address } = ctx.query
     _id = new ObjectID(_id)
     // 查到原料仓库对应的数据
-    // let ylRes = await db.find("materialHistory", { _id: _id })
+    // let ylRes = await db.find("hardwareHistory", { _id: _id })
     let ylRes
     if(ctx.query.type == 2){
-        ylRes = await db.find("deliveryHistory", { _id: _id })
+        ylRes = await db.find("hardwaredelivery", { _id: _id })
     }else{
-        ylRes = await db.find("materialHistory", { _id: _id })
+        ylRes = await db.find("hardwareHistory", { _id: _id })
     }
-    // let param={
-    //     name:ylRes[0].name,
-    //     typeName:ylRes[0].typeName,
-    //     num:num
-    // }
     let param
     if (ctx.query.type == 2) {
         param = {
             name: ylRes[0].name,
             typeName: ylRes[0].typeName,
-            num: num,
+            num: ylRes[0].num,
             type: 2
         }
     } else {
@@ -47,14 +42,15 @@ router.get('/', async (ctx, next) => {
     }
 
 
-    let deleteData = await axios.get("http://localhost:18883/deletematerial", { params: param }).then(res => {
+    let deleteData = await axios.get("http://localhost:18883/deletehardware", { params: param }).then(res => {
         if (res.status == 200) {
             return true
         }
     })
 
     if (deleteData) {
-        let data = await db.find("materialGoods", { name, typeName })
+        let data = await db.find("hardwareGoods", { name, typeName })
+        console.log('看到',data)
         if (data.length > 0) {
             // 说明仓库有材料
             // let nums = data[0].num * 1 + num * 1
@@ -65,14 +61,14 @@ router.get('/', async (ctx, next) => {
                 nums = data[0].num * 1 + num * 1
             }
 
-            let res = await db.update("materialGoods", { _id: data[0]._id }, { $set: { num: nums } })
+            let res = await db.update("hardwareGoods", { _id: data[0]._id }, { $set: { num: nums } })
             if (res.modifiedCount > 0) {
-                // let historyRes = await db.update("materialHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
+                // let historyRes = await db.update("hardwareHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
                 let historyRes
                 if (ctx.query.type == 2) {
-                    historyRes = await db.update("deliveryHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
+                    historyRes = await db.update("hardwaredelivery", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
                 } else {
-                    historyRes = await db.update("materialHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
+                    historyRes = await db.update("hardwareHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
                 }
                 if (historyRes.modifiedCount > 0) {
                     ctx.body = {
@@ -97,10 +93,10 @@ router.get('/', async (ctx, next) => {
                     msg:"修改失败，没有找到该材料"
                 }
             } else {
-                let res = await db.insert("materialGoods", { name, typeName, num, unit, address, remark })
+                let res = await db.insert("hardwareGoods", { name, typeName, num, unit, address, remark })
                 if (res.insertedId) {
                     console.log(res.insertedId)
-                    let updateRes = await db.update("materialHistory", { _id }, { $set: { name, typeName, num, price, money, username, unit, time, operation, remark, address, compare: 0 } })
+                    let updateRes = await db.update("hardwareHistory", { _id }, { $set: { name, typeName, num, price, money, username, unit, time, operation, remark, address, compare: 0 } })
                     if (updateRes.modifiedCount > 0) {
                         ctx.body = {
                             state: 200,

@@ -11,10 +11,12 @@ const router = new Router();
 const userRouter = require('./username');
 const materialgoodsRouter = require('./material/materialgoods');
 const edithistoryRouter = require('./material/edithistory');
+const edithardwareRouter = require('./material/edithardware');
 const materialaddgoodsRouter = require('./material/addgoods');
 const materialmessageRouter = require('./material/materialmessage');
 const deliverylistRouter = require('./material/deliverylist');
 const deletematerialRouter = require('./material/deletematerial');
+const deletehardwareRouter = require('./material/deletehardware');
 const materialsearchRouter = require('./material/materialsearch');
 const listRouter = require('./list');
 const ckAddRouter = require('./ckAdd');
@@ -69,8 +71,10 @@ router.use('/user',userRouter.routes())
 router.use('/materialgood',materialgoodsRouter.routes())
 router.use('/materialaddgood',materialaddgoodsRouter.routes())
 router.use('/editmaterialhistory',edithistoryRouter.routes())
+router.use('/edithardware',edithardwareRouter.routes())
 router.use('/deliverylist',deliverylistRouter.routes())
 router.use('/deletematerial',deletematerialRouter.routes())
+router.use('/deletehardware',deletehardwareRouter.routes())
 router.use('/materialsearch',materialsearchRouter.routes())
 router.use('/materialmessage',materialmessageRouter.routes())
 router.use('/billmoney',billMoneyRouter.routes())
