@@ -42,7 +42,7 @@ router.get('/', async (ctx, next) => {
     }
 
 
-    let deleteData = await axios.get("http://localhost:18883/deletehardware", { params: param }).then(res => {
+    let deleteData = await axios.get("http://47.122.37.166:18883/deletehardware", { params: param }).then(res => {
         if (res.status == 200) {
             return true
         }

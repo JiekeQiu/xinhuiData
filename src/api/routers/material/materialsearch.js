@@ -40,8 +40,9 @@ router.get('/', async (ctx, next) => {
         } else {
             // obj = params
             let seach = params[o].replaceAll('*',"\\*")
-            console.log("看看2o", seach)
-            obj[o] = { $regex: seach }
+            let search = seach.replaceAll('/','\\/') 
+            console.log("看看2o", search)
+            obj[o] = { $regex: search }
         }
     }
     if (end) {

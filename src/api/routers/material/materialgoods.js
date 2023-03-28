@@ -9,6 +9,7 @@
  * @params type==7 五金库存分页查询
  * @params type==8 五金历史记录分页查询
  * @params type==9 五金出库历史记录分页查询
+ * @params type==10 所有五金库存查询
  * 
  * 
  */
@@ -181,6 +182,21 @@ router.get('/',async(ctx,next)=>{
                 res,
                 count,
                 msg:"没有找到该原料"
+            }
+            next()
+        }
+    }else if(ctx.query.type==10){
+        let res = await db.find("hardwareGoods",{})
+        if(res.length>0){
+            ctx.body={
+                res,
+                state:200,
+            }
+            next()
+        }else{
+            ctx.body={
+                res,
+                msg:"没有找到该五金"
             }
             next()
         }

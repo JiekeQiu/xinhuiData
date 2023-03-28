@@ -18,6 +18,7 @@ const deliverylistRouter = require('./material/deliverylist');
 const deletematerialRouter = require('./material/deletematerial');
 const deletehardwareRouter = require('./material/deletehardware');
 const materialsearchRouter = require('./material/materialsearch');
+const replenishmentRouter = require('./material/replenishment');
 const listRouter = require('./list');
 const ckAddRouter = require('./ckAdd');
 const goodsnameRouter = require('./goodsname');
@@ -77,6 +78,7 @@ router.use('/deletematerial',deletematerialRouter.routes())
 router.use('/deletehardware',deletehardwareRouter.routes())
 router.use('/materialsearch',materialsearchRouter.routes())
 router.use('/materialmessage',materialmessageRouter.routes())
+router.use('/replenishment',replenishmentRouter.routes())
 router.use('/billmoney',billMoneyRouter.routes())
 router.use('/exportfile',exportfileRouter.routes())
 router.use('/findmoney',findMoneyRouter.routes())

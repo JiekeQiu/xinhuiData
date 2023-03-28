@@ -95,10 +95,10 @@ router.get('/', async (ctx, next) => {
             } else {
                 // 这里是新材料
                 console.log("这里是行材料", data[i])
-                let res = await db.insert('materialGoods', { name: data[i].name, typeName: data[i].typeName, num: data[i].num, unit: data[i].unit, address: data[i].address, remark: data[i].remark ,compare:0})
+                let res = await db.insert('hardwareGoods', { name: data[i].name, typeName: data[i].typeName, num: data[i].num, unit: data[i].unit, address: data[i].address, remark: data[i].remark ,compare:0})
                 if (res.acknowledged) {
                      // 直接把数据传到历史记录表里
-                     let res = await db.insert('materialHistory', { name: data[i].name, typeName: data[i].typeName, num: data[i].num, unit: data[i].unit, price: data[i].price, money: data[i].money, remark: data[i].remark,address:data[i].address, username, time ,operation})
+                     let res = await db.insert('hardwareHistory', { name: data[i].name, typeName: data[i].typeName, num: data[i].num, unit: data[i].unit, price: data[i].price, money: data[i].money, remark: data[i].remark,address:data[i].address, username, time ,operation})
                      console.log("有咩有到", res)
                      if (res.acknowledged) {
                          ctx.body = {

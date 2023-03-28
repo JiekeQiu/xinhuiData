@@ -35,7 +35,7 @@ router.get('/', async (ctx, next) => {
         param = {
             name: ylRes[0].name,
             typeName: ylRes[0].typeName,
-            num: num,
+            num: ylRes[0].num,
             type: 2
         }
     } else {
@@ -47,7 +47,7 @@ router.get('/', async (ctx, next) => {
     }
 
 
-    let deleteData = await axios.get("http://localhost:18883/deletematerial", { params: param }).then(res => {
+    let deleteData = await axios.get("http://47.122.37.166:18883/deletematerial", { params: param }).then(res => {
         if (res.status == 200) {
             return true
         }
@@ -64,7 +64,6 @@ router.get('/', async (ctx, next) => {
             } else {
                 nums = data[0].num * 1 + num * 1
             }
-
             let res = await db.update("materialGoods", { _id: data[0]._id }, { $set: { num: nums } })
             if (res.modifiedCount > 0) {
                 // let historyRes = await db.update("materialHistory", { _id }, { $set: { name, typeName, num, price, money, username, address, remark } })
